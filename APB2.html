@@ -1,0 +1,146 @@
+<html>
+  <head>
+    <title> Aventuras de um Boneco de Palito </title>
+
+    <style type="text/css">
+      span.decisao {
+        font-weight: bold;
+        border: thin solid #000000;
+        padding: 4px;
+        background-color: #DDDDDD;
+      }
+    </style>
+
+    <script type="text/javascript">
+    var cenaAtual = 0;
+    var decisaoTomada = 0;
+    var mensagem;
+
+    function substituirNoDeTexto(id, texto) {
+      var legendaCena = document.getElementById(id);
+      while (legendaCena.firstChild) {
+        legendaCena.removeChild(legendaCena.firstChild);
+      }
+      legendaCena.appendChild(document.createTextNode(texto));
+    }
+
+    function trocarCena (decisao) {
+      var decisao1 = "", decisao2 = "";
+
+/*    if (cenaAtual == 0) {
+        cenaAtual = 1;
+        mensagem = "Sua aventura inicia em uma bifurcacao numa estrada";
+      } else if (cenaAtual == 1) {
+        if (decisao == 1) {
+          cenaAtual = 2;
+          mensagem = "Voce chegou a uma amistosa casinha na floresta";
+        } else {
+          cenaAtual = 3;
+          mensagem = "Voce esta sobre a ponte observando a agua";
+        }
+      } else if (cenaAtual == 2) {
+        if (decisao == 1) {
+          cenaAtual = 8;
+        } else {
+          cenaAtual = 5;
+          mensagem = "Desculpe, agora voce faz parte do ensopado da bruxa";
+        }
+      } else if (cenaAtual == 3) {
+        if (decisao == 1) {
+          cenaAtual = 6;
+          mensagem = "Desculpe, voce virou almoco de ogro";
+        } else {
+          cenaAtual = 8;
+        }
+      } */
+
+      switch(cenaAtual) {
+        case 0:
+          cenaAtual = 1;
+          decisaoTomada = 1;
+          mensagem = "Sua aventura inicia em uma bifurcacao numa estrada";
+          decisao1 = "Ir para a floresta";
+          decisao2 = "Ir para a ponte";
+          document.getElementById("decisao2").style.visibility = "visible";
+        break;
+        case 1:
+          if (decisao == 1) {
+            cenaAtual = 2;
+            decisaoTomada = 1;
+            mensagem = "Voce chegou a uma amistosa casinha na floresta";
+            decisao1 = "Dar a volta na casa";
+            decisao2 = "Bater na porta";
+          } else {
+            cenaAtual = 3;
+            decisaoTomada = 2;
+            mensagem = "Voce esta sobre a ponte observando a agua";
+            decisao1 = "Cruzar a ponte";
+            decisao2 = "Ficar por aqui";
+          }
+        break;
+        case 2:
+          if (decisao == 1) {
+            cenaAtual = 8;
+            decisaoTomada = 1;
+          } else {
+            cenaAtual = 5;
+            decisaoTomada = 2;
+            mensagem = "Desculpe, agora voce faz parte do ensopado da bruxa";
+            decisao1 = "Tentar novamente";
+            decisao2 = "";
+            document.getElementById("decisao2").style.visibility = "hidden";
+          }
+        break;
+        case 3:
+          if (decisao == 1) {
+            cenaAtual = 6;
+            decisaoTomada = 1;
+            mensagem = "Desculpe, voce virou almoco de ogro";
+            decisao1 = "Tentar novamente";
+            decisao2 = "";
+            document.getElementById("decisao2").style.visibility = "hidden";
+          } else {
+            cenaAtual = 8;
+            decisaoTomada = 2;
+          }
+        break;
+      }
+
+      document.getElementById("cena").src = "scene" + cenaAtual + ".png";
+      //document.getElementById("mensagem").innerHTML = mensagem;
+      substituirNoDeTexto("mensagem", mensagem);
+      substituirNoDeTexto("decisao1", decisao1);
+      substituirNoDeTexto("decisao2", decisao2);
+      historico(decisaoTomada, cenaAtual, mensagem);
+    }
+
+    function historico (decisao, cena, mensagem) {
+      var elementoDecisao = document.createElement("span");
+      var texto = document.createTextNode("Decisao " + decisao + " -> Cena " + cena + ": " + mensagem);
+      elementoDecisao.appendChild(texto);
+      elementoDecisao.appendChild(document.createElement("br"));
+
+      if (cenaAtual > 0) {
+        document.getElementById("historico").appendChild(elementoDecisao);
+      } else {
+        while (historico.firstChild) {
+          historico.removeChild(historico.firstChild);
+        }
+      }
+    }
+
+
+    </script>
+  </head>
+
+  <body>
+    <div style="text-align: center; margin-top: 100px">
+      <img id="cena" src="scene0.png" /><br />
+      <span id="mensagem"></span><br /><br />
+      <span id="decisao1" class="decisao" style="cursor:pointer" onclick="trocarCena(1)">Jogar</span>
+      <span id="decisao2" class="decisao" style="cursor:pointer; visibility:hidden" onclick="trocarCena(2)"></span><br /><br />
+      <div id="historico">
+      </div>
+    </div>
+  </body>
+</html>
